@@ -1,0 +1,284 @@
+﻿
+"
+"
+" To use it, copy it to
+"     for Unix and OS/2:  ~/.vimrc
+"	      for Amiga:  s:.vimrc
+"  for MS-DOS and Win32:  $VIM\_vimrc
+"	    for OpenVMS:  sys$login:.vimrc
+
+
+
+" When started as "evim", evim.vim will already have done these settings.
+if v:progname =~? "evim"
+  finish
+endif
+
+" Get the defaults that most users want.
+source $VIMRUNTIME/defaults.vim
+
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+"else
+ " set backup		" keep a backup file (restore to previous version)
+  if has('persistent_undo')
+    set undofile	" keep an undo file (undo changes after closing)
+  endif
+endif
+
+if &t_Co > 2 || has("gui_running")
+  " Switch on highlighting the last used search pattern.
+  set hlsearch
+endif
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+
+  augroup END
+
+else
+
+  set autoindent		" always set autoindenting on
+
+endif " has("autocmd")call vundle#rc()  call vundle#rc()call vundle#rc()    
+
+" Add optional packages.
+"
+" The matchit plugin makes the % command work better, but it is not backwards
+" compatible.
+if has('syntax') && has('eval')
+  packadd matchit
+endif
+
+set nocompatible               " be iMproved  
+filetype off                   " required!  
+  
+set rtp+=~/.vim/bundle/vundle/  
+call vundle#rc()  
+
+syntax on
+
+
+"set background=dark 
+
+" let Vundle manage Vundle 
+" required! 
+"这是vundle本身的设置  
+ Bundle 'gmarik/vundle'    
+ Bundle 'dpelle/vim-LanguageTool'   
+ " My Bundles here:  
+ "这里是设置你自己自定义的插件的设置vundle设置，注意：下载的插件git为：https://github.com/godlygeek/tabular.git，则设置为Bundle 'godlygeek/tabular';https://github.com/gmarik/vundle.git设置则为 Bundle 'gmarik/vundle'    
+ " original repos on github  
+ Bundle 'godlygeek/tabular'  
+  
+ " vim-scripts repos，vim-scripts的访问地址，格式则如下：  
+ Bundle 'davidhalter/jedi-vim''
+ Bundle 'L9'  
+ Bundle 'FuzzyFinder' 
+ Bundle 'matchit.zip'  
+ Bundle 'ervandew/supertab'
+ Bundle 'https://github.com/scrooloose/nerdtree.git'
+ Bundle 'word_complete.vim'
+ Bundle 'tomasr/molokai'
+ Bundle 'xuhdev/vim-latex-live-preview'
+ Bundle 'Valloric/YouCompleteMe'
+ Bundle 'jiangmiao/auto-pairs'
+ Bundle 'kien/ctrlp.vim'
+ Bundle 'majutsushi/tagbar'    "代码符号
+ Bundle 'wesleyche/SrcExpl'    "类似sourceInsight的代码预览窗口execute pathogen#infect()
+ " non github repos ，非git的访问地址的，格式如下：  
+ Bundle 'git://git.wincent.com/command-t.git'  
+
+ " ...  
+  
+ filetype plugin indent on     " required! 
+
+ "  
+ " Brief help  
+ " :BundleList          - list configured bundles  
+ " :BundleInstall(!)    - install(update) bundles  
+ " :BundleSearch(!) foo - search(or refresh cache first) for foo  
+ " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles  
+ "  
+ " see :h vundle for more details or wiki for FAQ  
+ " NOTE: comments after Bundle command are not allowed..  
+Plugin 'majutsushi/tagbar'
+"Tag Bar
+"" 启动时自动focus
+let g:tagbar_auto_faocus =1 
+" 启动指定文件时自动开启tagbar
+autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
+
+" Nerd Tree
+autocmd vimenter * NERDTree
+" Python
+au BufNewFile,BufRead *.py
+\ set tabstop=4 |
+\ set softtabstop=4 |
+\ set shiftwidth=4 |
+\ set textwidth=79 |
+\ set expandtab |
+\ set autoindent |
+\ set fileformat=unix |
+\ set encoding=utf-8 |
+\ set nu
+nmap <F3> :w<cr>:!python %<cr>
+"
+set guifont=Courier\ New:h20
+colorscheme desert
+
+" 自动补全配置
+let g:ycm_autoclose_preview_window_after_completion=1
+" 跳转到定义处
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" 默认tab、s-tab和自动补全冲突
+let g:ycm_key_list_select_completion = ['<TAB>', '<c-n>', ''] 
+let g:ycm_key_list_previous_completion = ['<S-TAB>', '<c-p>', ''] 
+let g:ycm_auto_trigger = 1
+let g:ycm_python_binary_path='python3.6'
+
+
+" *********************************************
+" 分割布局相关
+" *********************************************
+set splitbelow
+set splitright
+"快捷键，ctrl+l切换到左边布局，ctrl+h切换到右边布局
+"ctrl+k切换到上面布局，ctrl+j切换到下面布局
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+
+"call vundle#begin()
+" A Vim Plugin for Lively Previewing LaTeX PDF Output
+"Plugin 'xuhdev/vim-latex-live-preview'
+"call vundle#end()
+
+"call plug#begin('~/.vim/plugged')
+" A Vim Plugin for Lively Previewing LaTeX PDF Output
+"Plug 'xuhdev/vim-latex-live-preview'
+"call plug#end()
+
+" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
+filetype plugin on
+
+set shellslash |
+
+set grepprg=grep\ -nH\ $*|
+
+filetype indent on |
+
+let g:tex_flavor='latex'
+
+
+
+autocmd Filetype tex setl updatetime=1
+
+let g:livepreview_previewer = 'open -a texshop'
+
+
+defaults write TeXShop BringPdfFrontOnAutomaticUpdate NO
+
+"jedi-vim
+let g:SuperTabDefaultCompletionType = "context"  
+let g:jedi#popup_on_dot = 0  
+
+" *********************************************
+" ctrlp
+" *********************************************
+let g:ctrlp_map = '<c-p>' 
+let g:ctrlp_cmd = 'CtrlP'
+" 设置过滤不进行查找的后缀名 
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|pyc)$'
+
+
+"autocorrect
+
+
+:let g:languagetool_jar='$HOME/languagetool/languagetool-standalone/target/LanguageTool-3.7-SNAPSHOT/LanguageTool-3.7-SNAPSHOT/languagetool-commandline.jar''
+
+:set number
+
+:nnoremap <F2> :<C-U>make %:r && ./%:r<CR>
+
+
+autocmd BufNewFile *.[ch],*.hpp,*.cpp,Makefile,*.mk,*.sh exec ":call SetTitle()"   
+  
+" 加入注释   
+func SetComment()  
+    call setline(1,"/*================================================================")   
+    call append(line("."),   "*   Copyright (C) ".strftime("%Y").". All rights reserved.")  
+    call append(line(".")+1, "*   ")   
+    call append(line(".")+2, "*   Filename：".expand("%:t"))   
+    call append(line(".")+3, "*   Author：Leon.Liang.Wang")
+    call append(line(".")+4, "*   Date：".strftime("%Y /%m / %d"))   
+    call append(line(".")+5, "*   Description：")   
+    call append(line(".")+6, "*") 
+    call append(line(".")+7, "*   Email：leonwang@bu.edu") 
+    call append(line(".")+8, "================================================================*/")   
+    call append(line(".")+9, "")  
+    call append(line(".")+10, "")  
+
+
+endfunc  
+  
+" 加入shell,Makefile注释  
+func SetComment_sh()  
+    call setline(3, "#================================================================")   
+    call setline(4, "#   Copyright (C) ".strftime("%Y").". All rights reserved.")
+    call setline(5, "#   ")
+    call setline(6, "#   Filename：".expand("%:t"))   
+    call setline(7, "#   Author：Leon.Liang.Wang")  
+    call setline(8, "#   Created Time：".strftime("%Y /%m /%d"))   
+    call setline(9, "#   Description：")   
+    call setline(10, "#")  
+    call setline(11, "#================================================================")  
+    call setline(12, "")  
+    call setline(13, "")  
+endfunc   
+  
+" 定义函数SetTitle，自动插入文件头   
+func SetTitle()  
+  
+    if &filetype == 'make'   
+        call setline(1,"")   
+        call setline(2,"")  
+        call SetComment_sh()  
+  
+    elseif &filetype == 'sh'   
+        call setline(1,"#!/system/bin/sh")   
+        call setline(2,"")  
+        call SetComment_sh()  
+          
+    else  
+         call SetComment()  
+         if expand("%:e") == 'hpp'   
+          call append(line(".")+10, "#ifndef _".toupper(expand("%:t:r"))."_H")   
+          call append(line(".")+11, "#define _".toupper(expand("%:t:r"))."_H")   
+          call append(line(".")+12, "#ifdef __cplusplus")   
+          call append(line(".")+13, "extern \"C\"")   
+          call append(line(".")+14, "{")   
+          call append(line(".")+15, "#endif")   
+          call append(line(".")+16, "")   
+          call append(line(".")+17, "#ifdef __cplusplus")   
+          call append(line(".")+18, "}")   
+          call append(line(".")+19, "#endif")   
+          call append(line(".")+20, "#endif //".toupper(expand("%:t:r"))."_H")   
+  
+         elseif expand("%:e") == 'h'   
+        call append(line(".")+10, "#pragma once")   
+ 	endif 
+
+  
+    endif  
+endfunc
+   
